@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	gorm "github.com/infobloxopen/protoc-gen-gorm/options"
+	gorm "github.com/Unix4ever/protoc-gen-gorm/options"
 	jgorm "github.com/jinzhu/gorm"
 	"github.com/jinzhu/inflection"
 	"google.golang.org/protobuf/compiler/protogen"
@@ -373,6 +373,12 @@ func (b *ORMBuilder) generateConvertFunctions(g *protogen.GeneratedFile, message
 	g.P(`}`)
 
 	g.P()
+	g.P(`// Model converts the object to ORM model.`)
+	g.P(`func (m *`, typeName, `) Model(ctx `, generateImport("Context", "context", g), `) (res interface{}, err error) {`)
+	g.P(`return m.ToORM()`)
+	g.P(`}`)
+
+	g.P()
 	///// To Pb
 	g.P(`// ToPB runs the BeforeToPB hook if present, converts the fields of this`)
 	g.P(`// object to PB format, runs the AfterToPB hook, then returns the PB object`)
@@ -399,6 +405,13 @@ func (b *ORMBuilder) generateConvertFunctions(g *protogen.GeneratedFile, message
 	g.P(`err = posthook.AfterToPB(ctx, &to)`)
 	g.P(`}`)
 	g.P(`return to, err`)
+	g.P(`}`)
+
+	g.P()
+	g.P(`// Proto converts the ORM model.`)
+	g.P(`func (m *`, typeName, `ORM) Proto(ctx context.Context (interface{}, error) {`)
+	g.P(`res, err := m.ToPB(ctx)`)
+	g.P(`return &res, err`)
 	g.P(`}`)
 }
 

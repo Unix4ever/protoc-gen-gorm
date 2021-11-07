@@ -1,4 +1,4 @@
-module github.com/infobloxopen/protoc-gen-gorm
+module github.com/Unix4ever/protoc-gen-gorm
 
 require (
 	github.com/denisenkom/go-mssqldb v0.9.0 // indirect
